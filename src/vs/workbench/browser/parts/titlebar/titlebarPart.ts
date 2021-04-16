@@ -20,10 +20,10 @@ import { EditorResourceAccessor, Verbosity, SideBySideEditor } from 'vs/workbenc
 import { IWorkbenchEnvironmentService } from 'vs/workbench/services/environment/common/environmentService';
 import { IWorkspaceContextService, WorkbenchState, IWorkspaceFolder } from 'vs/platform/workspace/common/workspace';
 import { IThemeService, registerThemingParticipant } from 'vs/platform/theme/common/themeService';
-import { TITLE_BAR_ACTIVE_BACKGROUND, TITLE_BAR_ACTIVE_FOREGROUND, TITLE_BAR_INACTIVE_FOREGROUND, TITLE_BAR_INACTIVE_BACKGROUND, TITLE_BAR_BORDER, WORKBENCH_BACKGROUND } from 'vs/workbench/common/theme';
+import { TITLE_BAR_ACTIVE_BACKGROUND, TITLE_BAR_ACTIVE_FOREGROUND, TITLE_BAR_INACTIVE_FOREGROUND, TITLE_BAR_INACTIVE_BACKGROUND, TITLE_BAR_BORDER } from 'vs/workbench/common/theme';
 import { isMacintosh, isWindows, isLinux, isWeb } from 'vs/base/common/platform';
 import { URI } from 'vs/base/common/uri';
-import { Color } from 'vs/base/common/color';
+import { Color, RGBA } from 'vs/base/common/color';
 import { trim } from 'vs/base/common/strings';
 import { EventType, EventHelper, Dimension, isAncestor, append, $, addDisposableListener, runAtThisOrScheduleAtNextAnimationFrame, prepend } from 'vs/base/browser/dom';
 import { CustomMenubarControl } from 'vs/workbench/browser/parts/titlebar/menubarControl';
@@ -429,7 +429,11 @@ export class TitlebarPart extends Part implements ITitleService {
 				// To benefit from LCD font rendering, we must ensure that we always set an
 				// opaque background color. As such, we compute an opaque color given we know
 				// the background color is the workbench background.
-				return color.isOpaque() ? color : color.makeOpaque(WORKBENCH_BACKGROUND(theme));
+				if (color.isOpaque()) {
+					return color;
+				} else {
+					return new Color(new RGBA(color.rgba.r, color.rgba.g, color.rgba.b, 1));
+				}
 			}) || '';
 			this.element.style.backgroundColor = titleBackground;
 

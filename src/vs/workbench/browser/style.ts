@@ -21,7 +21,7 @@ registerThemingParticipant((theme, collector) => {
 	}
 
 	// Background (We need to set the workbench background color so that on Windows we get subpixel-antialiasing)
-	const workbenchBackground = WORKBENCH_BACKGROUND(theme);
+	const workbenchBackground = theme.getColor(WORKBENCH_BACKGROUND);
 	collector.addRule(`.monaco-workbench { background-color: ${workbenchBackground}; }`);
 
 	// Icon defaults

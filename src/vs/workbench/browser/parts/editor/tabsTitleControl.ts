@@ -1900,18 +1900,18 @@ registerThemingParticipant((theme, collector) => {
 	// - if we have a contrast border (which draws an outline - https://github.com/microsoft/vscode/issues/109117)
 	// - on Safari (https://github.com/microsoft/vscode/issues/108996)
 	if (theme.type !== 'hc' && !isSafari && !activeContrastBorderColor) {
-		const workbenchBackground = WORKBENCH_BACKGROUND(theme);
+		const workbenchBackground = theme.getColor(WORKBENCH_BACKGROUND);
 		const editorBackgroundColor = theme.getColor(editorBackground);
 		const editorGroupHeaderTabsBackground = theme.getColor(EDITOR_GROUP_HEADER_TABS_BACKGROUND);
 		const editorDragAndDropBackground = theme.getColor(EDITOR_DRAG_AND_DROP_BACKGROUND);
 
 		let adjustedTabBackground: Color | undefined;
-		if (editorGroupHeaderTabsBackground && editorBackgroundColor) {
+		if (editorGroupHeaderTabsBackground && editorBackgroundColor && workbenchBackground) {
 			adjustedTabBackground = editorGroupHeaderTabsBackground.flatten(editorBackgroundColor, editorBackgroundColor, workbenchBackground);
 		}
 
 		let adjustedTabDragBackground: Color | undefined;
-		if (editorGroupHeaderTabsBackground && editorBackgroundColor && editorDragAndDropBackground && editorBackgroundColor) {
+		if (editorGroupHeaderTabsBackground && editorBackgroundColor && editorDragAndDropBackground && editorBackgroundColor && workbenchBackground) {
 			adjustedTabDragBackground = editorGroupHeaderTabsBackground.flatten(editorBackgroundColor, editorDragAndDropBackground, editorBackgroundColor, workbenchBackground);
 		}
 

@@ -144,6 +144,8 @@ export class CodeWindow extends Disposable implements ICodeWindow {
 				minHeight: WindowMinimumSize.HEIGHT,
 				show: !isFullscreenOrMaximized,
 				title: this.productService.nameLong,
+				transparent: true,
+				visualEffectState: 'active',
 				webPreferences: {
 					preload: FileAccess.asFileUri('vs/base/parts/sandbox/electron-browser/preload.js', require).fsPath,
 					v8CacheOptions: browserCodeLoadingCacheStrategy,
@@ -219,6 +221,8 @@ export class CodeWindow extends Disposable implements ICodeWindow {
 			if (isMacintosh && useCustomTitleStyle) {
 				this._win.setSheetOffset(22); // offset dialogs by the height of the custom title bar if we have any
 			}
+
+			this.applyTransparency(windowConfig);
 
 			// TODO@electron (Electron 4 regression): when running on multiple displays where the target display
 			// to open the window has a larger resolution than the primary display, the window will not size
@@ -672,6 +676,8 @@ export class CodeWindow extends Disposable implements ICodeWindow {
 			this.logService.trace(`Setting proxy to '${proxyRules}', bypassing '${proxyBypassRules}'`);
 			this._win.webContents.session.setProxy({ proxyRules, proxyBypassRules, pacScript: '' });
 		}
+
+		this.applyTransparency(this.configurationService.getValue<IWindowSettings>('window'));
 	}
 
 	addTabbedWindow(window: ICodeWindow): void {
@@ -757,6 +763,21 @@ export class CodeWindow extends Disposable implements ICodeWindow {
 
 		// Event
 		this._onWillLoad.fire({ workspace: configuration.workspace });
+	}
+
+	private applyTransparency(windowConfig: IWindowSettings | undefined): void {
+		let applied = false;
+		if (windowConfig) {
+			if (isMacintosh && parseFloat(release()) >= 14) {
+				if (windowConfig.vibrancy && windowConfig.vibrancy !== 'none') {
+					this._win.setVibrancy(windowConfig.vibrancy);
+					applied = true;
+				} else {
+					this._win.setVibrancy(null as any);
+				}
+			}
+		}
+		this._win.setBackgroundColor(applied ? '#00000000' : this.themeMainService.getBackgroundColor());
 	}
 
 	async reload(cli?: NativeParsedArgs): Promise<void> {

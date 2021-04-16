@@ -433,7 +433,8 @@ export class TerminalInstance extends Disposable implements ITerminalInstance {
 			fastScrollSensitivity: editorOptions.fastScrollSensitivity,
 			scrollSensitivity: editorOptions.mouseWheelScrollSensitivity,
 			rendererType: xtermRendererType,
-			wordSeparator: config.wordSeparators
+			wordSeparator: config.wordSeparators,
+			allowTransparency: true
 		});
 		this._xterm = xterm;
 		this._xtermCore = (xterm as any)._core as XTermCore;

@@ -1162,8 +1162,12 @@ registerThemingParticipant((theme: IColorTheme, collector: ICssStyleCollector) =
 	collector.addRule(`.keybindings-editor > .keybindings-body > .keybindings-table-container .monaco-table .monaco-list:not(.focused) .monaco-list-row:nth-child(even).focused:not(.selected):not(:hover) .monaco-table-tr { background-color: ${evenRowBackgroundColor}; }`);
 
 	const foregroundColor = theme.getColor(foreground);
+	let workbenchBackground = theme.getColor(WORKBENCH_BACKGROUND);
+	if (workbenchBackground === undefined) {
+		workbenchBackground = Color.fromHex('#000000');
+	}
 	if (foregroundColor) {
-		const whenForegroundColor = foregroundColor.transparent(.8).makeOpaque(WORKBENCH_BACKGROUND(theme));
+		const whenForegroundColor = foregroundColor.transparent(.8).makeOpaque(workbenchBackground);
 		collector.addRule(`.keybindings-editor > .keybindings-body > .keybindings-table-container .monaco-table .monaco-table-tr .monaco-table-td .code { color: ${whenForegroundColor}; }`);
 		const whenForegroundColorForEvenRow = foregroundColor.transparent(.8).makeOpaque(evenRowBackgroundColor);
 		collector.addRule(`.keybindings-editor > .keybindings-body > .keybindings-table-container .monaco-table .monaco-list-row:nth-child(even) .monaco-table-tr .monaco-table-td .code { color: ${whenForegroundColorForEvenRow}; }`);

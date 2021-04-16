@@ -121,6 +121,7 @@ export interface IWindowSettings {
 	readonly enableMenuBarMnemonics: boolean;
 	readonly closeWhenEmpty: boolean;
 	readonly clickThroughInactive: boolean;
+	readonly vibrancy: 'none' | 'medium-light' | 'ultra-dark' | 'content' | 'window';
 }
 
 export function getTitleBarStyle(configurationService: IConfigurationService): 'native' | 'custom' {

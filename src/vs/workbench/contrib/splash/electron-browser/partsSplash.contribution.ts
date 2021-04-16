@@ -111,9 +111,11 @@ class PartsSplash {
 			this._lastBackground = colorInfo.editorBackground;
 
 			// the color needs to be in hex
-			const backgroundColor = this._themeService.getColorTheme().getColor(editorBackground) || themes.WORKBENCH_BACKGROUND(this._themeService.getColorTheme());
-			const payload = JSON.stringify({ baseTheme, background: Color.Format.CSS.formatHex(backgroundColor) });
-			ipcRenderer.send('vscode:changeColorTheme', this._nativeHostService.windowId, payload);
+			const backgroundColor = this._themeService.getColorTheme().getColor(editorBackground) || this._themeService.getColorTheme().getColor(themes.WORKBENCH_BACKGROUND);
+			if (backgroundColor) {
+				const payload = JSON.stringify({ baseTheme, background: Color.Format.CSS.formatHex(backgroundColor) });
+				ipcRenderer.send('vscode:changeColorTheme', this._nativeHostService.windowId, payload);
+			}
 		}
 	}
 

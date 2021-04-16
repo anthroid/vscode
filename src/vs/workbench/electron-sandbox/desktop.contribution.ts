@@ -273,6 +273,14 @@ import { IJSONSchema } from 'vs/base/common/jsonSchema';
 				'scope': ConfigurationScope.APPLICATION,
 				'description': localize('window.clickThroughInactive', "If enabled, clicking on an inactive window will both activate the window and trigger the element under the mouse if it is clickable. If disabled, clicking anywhere on an inactive window will activate it only and a second click is required on the element."),
 				'included': isMacintosh
+			},
+			'window.vibrancy': {
+				'type': 'string',
+				'enum': ['none', 'medium-light', 'ultra-dark', 'content', 'window'],
+				'default': 'none',
+				'scope': ConfigurationScope.APPLICATION,
+				'description': localize('window.vibrancy', "Makes the root window transparent.\nDefine `workbench.background` in theme or color customizations to affect appearance."),
+				'included': isMacintosh
 			}
 		}
 	});
